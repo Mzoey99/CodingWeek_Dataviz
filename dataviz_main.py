@@ -1,7 +1,7 @@
 from corpusutils import load_corpus_in_dataframe
 from corpus_statistics import getTopics
 from corpus_statistics import printStatiques
-from annotation_analysis import annotate, printStatAllMisses, plotStat, annotateTextblob
+from annotation_analysis import annotate, printStatAllMisses, plotStat, annotateTextblob, plotAllStat
 from tutoTextBlob import load_tweet_with_textblob
 
 
@@ -28,7 +28,7 @@ def main():
     # print("nombre de mots negatifs", len(negative_words))
     annotations = annotate(topics, regions, miss, missNames)
     stat = printStatAllMisses(annotations, regions,miss)
-    plotStat(stat, "Repartition des avis selon les annotations")
+    # plotStat(stat, "Repartition des avis selon les annotations")
 
     info_textblob = load_tweet_with_textblob("tweets-ids")
 
@@ -39,7 +39,8 @@ def main():
     neutre = len(info_textblob[info_textblob["opinion"]=='neutre'])
     print(nb_positive,nb_negative,neutre)
     stat_blob = printStatAllMisses(annotations_blob, regions,miss)
-    plotStat(stat_blob, "Repartition des avis selon Textblob")
+    # plotStat(stat_blob, "Repartition des avis selon Textblob")
+    plotAllStat(stat, stat_blob)
 
 
 if __name__ == '__main__':

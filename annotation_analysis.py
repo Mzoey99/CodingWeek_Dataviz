@@ -87,6 +87,20 @@ def plotStat(stat, title):
     plt.title(title)
     plt.tight_layout()
     plt.show()
+
+def plotAllStat(stat, stat_blob):
+    stat = stat.sort_values(by=["Nom"])
+    stat_blob = stat_blob.sort_values(by=["Nom"])
+    stat_blob = stat_blob.rename(columns={"Nom": "Nom_TextBlob", "nb_positif": "nb_positif_textBlob", "nb_negatif": "nb_negatif_textBlob"})
+    result = pd.concat([stat, stat_blob], axis=1, join='outer')
+    result = result.sort_values(by=["nb_positif"], ascending=False)
+    result.plot(y= ["nb_positif","nb_negatif","nb_positif_textBlob","nb_negatif_textBlob"], x='Nom', kind='bar', color={"nb_positif": "#008000", "nb_negatif": "#B22222","nb_positif_textBlob":"#00FA9A", "nb_negatif_textBlob":"#DC143C" }, )
+    plt.tight_layout()
+    plt.title("Répartition des avis par Miss selon les annotations et Textblob")
+    plt.show()
+    print(result)
+    print(result.info())
+    
     
 
 
