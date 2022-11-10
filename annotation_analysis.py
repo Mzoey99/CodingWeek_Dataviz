@@ -57,7 +57,6 @@ def annotateTextblob(topics, regions, miss, missNames):
         # if 'miss' in row["topic"]:
         for name in regions: 
             if name in unidecode.unidecode(row["text"].lower()):
-                print(row["text"])
                 flag = miss[name]
                 break
         temp.append(flag)
@@ -79,11 +78,14 @@ def printStatAllMisses(annotations, regions, miss):
     return stat
 
 
-def plotStat(stat):
+def plotStat(stat, title):
     label = stat['Nom'].to_list()
     pos = stat["nb_positif"].to_list()
     neg = stat["nb_negatif"].to_list()
-    stat.plot(y= ["nb_positif","nb_negatif"], x='Nom', kind='bar')
+    stat = stat.sort_values(by=["nb_positif"], ascending=False)
+    stat.plot(y= ["nb_positif","nb_negatif"], x='Nom', kind='bar', color={"nb_positif": "#008000", "nb_negatif": "red"}, )
+    plt.title(title)
+    plt.tight_layout()
     plt.show()
     
 
