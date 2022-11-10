@@ -71,10 +71,7 @@ def load_corpus_in_dataframe(filename):
                 df = df.append(temp, ignore_index=True)
     return df
 
-df = load_corpus_in_dataframe("tweets-ids")
-print(df.info())
-
     
-with open("ids.txt", "w") as f:
-    for i, row in df.iterrows():
-        f.write(row["id"]+'\n')
+# with open("ids.txt", "w") as f:
+#     for i, row in df.iterrows():
+#         f.write(row["id"]+'\n')

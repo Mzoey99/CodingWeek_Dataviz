@@ -49,6 +49,7 @@ def load_tweet_with_textblob(filename):
     return info
 
 df = load_tweet_with_textblob('tweets-ids')
+print(df)
 print(df.info())
 nb_positive = len(df[df["opinion"]=='positive'])
 nb_negative = len(df[df["opinion"]=='negative'])

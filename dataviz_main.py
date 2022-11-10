@@ -1,7 +1,7 @@
 from corpusutils import load_corpus_in_dataframe
 from corpus_statistics import getTopics
 from corpus_statistics import printStatiques
-from annotation_analysis import annotate, printStatAllMisses
+from annotation_analysis import annotate, printStatAllMisses, plotStat, annotateTextblob
 from tutoTextBlob import load_tweet_with_textblob
 
 
@@ -11,28 +11,33 @@ miss = {'tahiti': "Miss Tahiti", 'pierre' : "Miss Saint-Pierre-et-Miquelon", 'ro
 missNames = {'delphine': 'Miss Alsace', 'wespiser':'Miss Alsace', 'mathilde': 'Miss Pays de Loire', 'couly':'Miss Pays de Loire', 'marie': 'Miss Réunion', 'payet':'Miss Réunion', 'solene': 'Miss Provence', 'froment':'Miss Provence','charlotte':"Miss Cote d'Azur", 'murray':"Miss Cote d'Azur"}
 
 def main(): 
-    print("Bonjour Lapinou")
-    df = load_corpus_in_dataframe("tweets-ids")
-    topics = getTopics(df)[0]
-    # printStatiques(df,topics)
-    nb_tweets = len(df)
-    print( "Nombre de tweets :", nb_tweets )
-    print(df.info())
-    topics, positive_words,negative_words = getTopics(df)
-    nb_positive = len(topics[topics["opinion"]=='positive'])
-    nb_negative = len(topics[topics["opinion"]=='negative'])
-    print(topics.info())
-    print("Nombre d'opinion positive", nb_positive)
-    print("Nombre d'opinion négative", nb_negative)
-    print("nombre de mots positifs", len(positive_words))
-    print("nombre de mots negatifs", len(negative_words))
-    annotations = annotate(topics, regions, miss, missNames)
+    # print("Bonjour Lapinou")
+    # df = load_corpus_in_dataframe("tweets-ids")
+    # topics = getTopics(df)[0]
+    # # printStatiques(df,topics)
+    # nb_tweets = len(df)
+    # print( "Nombre de tweets :", nb_tweets )
+    # print(df.info())
+    # topics, positive_words,negative_words = getTopics(df)
+    # nb_positive = len(topics[topics["opinion"]=='positive'])
+    # nb_negative = len(topics[topics["opinion"]=='negative'])
+    # print(topics.info())
+    # print("Nombre d'opinion positive", nb_positive)
+    # print("Nombre d'opinion négative", nb_negative)
+    # print("nombre de mots positifs", len(positive_words))
+    # print("nombre de mots negatifs", len(negative_words))
+    # annotations = annotate(topics, regions, miss, missNames)
     info_textblob = load_tweet_with_textblob("tweets-ids")
+
+    annotations = annotateTextblob(info_textblob, regions, miss, missNames)
+    print(annotations.dropna())
+
     nb_positive = len(info_textblob[info_textblob["opinion"]=='positive'])
     nb_negative = len(info_textblob[info_textblob["opinion"]=='negative'])
     neutre = len(info_textblob[info_textblob["opinion"]=='neutre'])
     print(nb_positive,nb_negative,neutre)
-    printStatAllMisses(annotations, regions,miss)
+    stat = printStatAllMisses(annotations, regions,miss)
+    plotStat(stat)
 
 
 if __name__ == '__main__':

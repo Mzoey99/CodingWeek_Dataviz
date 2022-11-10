@@ -50,6 +50,24 @@ def annotate(topics, regions, miss, missNames):
     annotations = topics.assign(Nom = temp)
     return annotations
 
+def annotateTextblob(topics, regions, miss, missNames):
+    temp = []
+    for index, row in topics.iterrows():
+        flag = None
+        # if 'miss' in row["topic"]:
+        for name in regions: 
+            if name in unidecode.unidecode(row["text"].lower()):
+                print(row["text"])
+                flag = miss[name]
+                break
+        temp.append(flag)
+        for name in missNames.keys() : 
+            if name in row["text"]:
+                flag = missNames[name]
+                break
+    annotations = topics.assign(Nom = temp)
+    return annotations
+
 def printStatAllMisses(annotations, regions, miss):
     stat = pd.DataFrame(columns=['Nom','nb_positif','nb_negatif'])
     for name in regions: 
@@ -58,23 +76,15 @@ def printStatAllMisses(annotations, regions, miss):
         temp['nb_negatif'] = len(annotations[(annotations['Nom']== miss[name]) & (annotations['opinion']=='negative') ])
         stat = stat.append(temp, ignore_index=True)
     print(stat)
-    return 0
+    return stat
 
-    # for name in regions: 
-    #     nomComplet.append(miss[name])
-    #     print(len(annotations[annotations["Nom"]==miss[name]]))
-    # return annotations
 
-def plotStat(annotations):
-    stat = pd.DataFrame(columns=['Nom','nb_positif','nb_negatif'])
-    for index, row in annotations.iterrows():
-        temp = {'Nom' : row['Nom']}
-        if row[2][1] == 'positive':
-            temp['nb_positif'] = row['id']
-        else : 
-            temp['nb_negatif'] = row['id']
-        stat = stat.append(temp, ignore_index=True )
-    print(stat)
+def plotStat(stat):
+    label = stat['Nom'].to_list()
+    pos = stat["nb_positif"].to_list()
+    neg = stat["nb_negatif"].to_list()
+    stat.plot(y= ["nb_positif","nb_negatif"], x='Nom', kind='bar')
+    plt.show()
     
 
 
